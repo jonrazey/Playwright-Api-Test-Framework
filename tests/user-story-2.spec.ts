@@ -2,9 +2,9 @@ import { test, expect } from '@playwright/test';
 
 test('User Story 2: Add three new clothing items to catalogue', async ({ request }) => {
   const newProducts = [
-    { title: 'Unique Shirt 1', price: 29.99, description: 'A unique shirt', image: 'https://i.pravatar.cc', category: 'clothing' },
-    { title: 'Unique Pants 2', price: 49.99, description: 'Unique pants', image: 'https://i.pravatar.cc', category: 'clothing' },
-    { title: 'Unique Jacket 3', price: 79.99, description: 'Unique jacket', image: 'https://i.pravatar.cc', category: 'clothing' }
+    { title: 'Unique Shirt 1', price: 29.99, description: 'A unique shirt', image: 'https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_t.png', category: 'clothing' },
+    { title: 'Unique Pants 2', price: 49.99, description: 'Unique pants', image: 'https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_t.png', category: 'clothing' },
+    { title: 'Unique Jacket 3', price: 79.99, description: 'Unique jacket', image: 'https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_t.png', category: 'clothing' }
   ];
 
   const addedIds: number[] = [];
