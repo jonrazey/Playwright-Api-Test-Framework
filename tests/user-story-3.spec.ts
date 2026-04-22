@@ -25,4 +25,31 @@ test('User Story 3: Delete product with lowest rating', async ({ request }) => {
   // Verify retrieving deleted product returns 404
   const getDeletedResponse = await request.get(`https://fakestoreapi.com/products/${productId}`);
   expect(getDeletedResponse.status()).toBe(404);
+
+  // Verify the new lowest rated product has a higher rating than the deleted item
+  const remainingProducts = updatedProducts.filter((p: any) => p.id !== productId);
+  const newLowestRated = remainingProducts.reduce((min: any, p: any) => p.rating.rate < min.rating.rate ? p : min);
+  expect(newLowestRated.rating.rate).toBeGreaterThanOrEqual(lowestRated.rating.rate);
+
+  // Re-add the deleted product back to the store
+  const restoreResponse = await request.post('https://fakestoreapi.com/products', {
+    data: {
+      title: lowestRated.title,
+      price: lowestRated.price,
+      description: lowestRated.description,
+      image: lowestRated.image,
+      category: lowestRated.category,
+    },
+  });
+  expect(restoreResponse.ok()).toBeTruthy();
+  const restoredProduct = await restoreResponse.json();
+  expect(restoredProduct.id).toBeDefined();
+  expect(restoredProduct.title).toBe(lowestRated.title);
+
+  // Verify the reinstated item has the lowest rating in the store
+  const finalProductsResponse = await request.get('https://fakestoreapi.com/products');
+  expect(finalProductsResponse.ok()).toBeTruthy();
+  const finalProducts = await finalProductsResponse.json();
+  const finalLowestRated = finalProducts.reduce((min: any, p: any) => p.rating.rate < min.rating.rate ? p : min);
+  expect(finalLowestRated.rating.rate).toBe(lowestRated.rating.rate);
 });

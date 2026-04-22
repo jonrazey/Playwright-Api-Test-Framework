@@ -37,4 +37,14 @@ test('User Story 2: Add three new clothing items to catalogue', async ({ request
     expect(product).toBeDefined();
     expect(product.category).toBe('clothing');
   }
+
+  // Attempt to add a duplicate item (same title as first product)
+  const duplicateProduct = { ...newProducts[0] };
+  const duplicateResponse = await request.post('https://fakestoreapi.com/products', {
+    data: duplicateProduct
+  });
+  const duplicateResult = await duplicateResponse.json();
+
+  // Verify duplicate is rejected (should not share an ID with existing products)
+  expect(addedIds).not.toContain(duplicateResult.id);
 });

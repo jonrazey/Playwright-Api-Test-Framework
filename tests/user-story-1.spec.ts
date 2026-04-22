@@ -14,6 +14,7 @@ test('User Story 1: View products and add cheapest electronics to cart', async (
   const cheapest = electronics.reduce((min: any, p: any) => p.price < min.price ? p : min);
   const productId = cheapest.id;
   const expectedPrice = cheapest.price;
+  const availableQuantity = cheapest.rating.count;
 
   // Add to cart
   const cartResponse = await request.post('https://fakestoreapi.com/carts', {
@@ -35,4 +36,17 @@ test('User Story 1: View products and add cheapest electronics to cart', async (
   expect(productResponse.ok()).toBeTruthy();
   const product = await productResponse.json();
   expect(product.price).toBe(expectedPrice);
+
+  // Verify the added product belongs to the electronics category
+  expect(product.category).toBe('electronics');
+
+  // Verify the added product is cheaper or equal to the next cheapest electronics product
+  const sortedElectronics = electronics.sort((a: any, b: any) => a.price - b.price);
+  const nextCheapest = sortedElectronics[1];
+  expect(product.price).toBeLessThanOrEqual(nextCheapest.price);
+
+  // Verify available quantity has reduced by one after adding to cart
+    // Note: FakeStoreAPI does not persist updates, so fetched quantity will be original
+    // This assertion documents expected behavior for a real implementation
+  expect(product.rating.count).toBe(availableQuantity - 1);
 });
