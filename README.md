@@ -1,4 +1,4 @@
-# Playwright Test Framework
+# Playwright API Test Framework
 
 API test automation framework using [Playwright](https://playwright.dev/) against the [FakeStoreAPI](https://fakestoreapi.com/).
 
