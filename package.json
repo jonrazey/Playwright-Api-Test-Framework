@@ -1,5 +1,5 @@
 {
-  "name": "playwright-test-framework",
+  "name": "playwright-api-test-framework",
   "version": "1.0.0",
   "description": "Playwright test framework",
   "type": "module",
